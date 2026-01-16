@@ -29,10 +29,21 @@ export function Navbar() {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         {/* Logo */}
-        <Link href="/" className="relative h-12 w-48 flex items-center transition-opacity hover:opacity-90">
-          <span className={cn("text-2xl font-serif font-bold", isScrolled ? "text-primary" : "text-white")}>
-            GolfScoti
-          </span>
+        <Link href="/" className="relative h-12 w-48 transition-opacity hover:opacity-90">
+          <Image
+            src="/images/logos/logo-white-horizontal.png"
+            alt="GolfScoti"
+            fill
+            className={cn("object-contain object-left", isScrolled ? "opacity-0 invisible" : "opacity-100 visible")}
+            priority
+          />
+          <Image
+            src="/images/logos/logo-scrolled.png"
+            alt="GolfScoti"
+            fill
+            className={cn("object-contain object-left absolute top-0 left-0", isScrolled ? "opacity-100 visible" : "opacity-0 invisible")}
+            priority
+          />
         </Link>
 
         {/* Navigation - Hidden on mobile for now, can add mobile menu later */}

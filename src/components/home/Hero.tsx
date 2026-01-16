@@ -13,9 +13,7 @@ export function Hero() {
 
             <div className="container mx-auto px-4 relative z-10 space-y-8 pt-20">
                 <div className="space-y-4 animate-fade-in-up">
-                    <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 [backdrop-filter:blur(8px)] border border-white/20 text-white text-sm font-medium mb-4">
-                        🏴󠁧󠁢󠁳󠁣󠁴󠁿 The Home of Golf Awaits
-                    </div>
+
                     <h1 className="text-5xl md:text-7xl font-serif font-bold tracking-tight text-white drop-shadow-2xl leading-tight">
                         Rediscover Golf in Scotland
                     </h1>
