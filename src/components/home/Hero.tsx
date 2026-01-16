@@ -7,8 +7,16 @@ export function Hero() {
     return (
         <section className="relative h-screen min-h-[700px] flex items-center justify-center text-center overflow-hidden">
             {/* Background Image - Using a placeholder or existing asset */}
-            <div className="absolute inset-0 z-0 bg-neutral-900">
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/60 via-transparent to-neutral-900/30" />
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+                <Image
+                    src="/images/hero-bg.jpg"
+                    alt="St Andrews Old Course"
+                    fill
+                    className="object-cover"
+                    priority
+                />
+                <div className="absolute inset-0 bg-black/60" />
             </div>
 
             <div className="container mx-auto px-4 relative z-10 space-y-8 pt-20">
