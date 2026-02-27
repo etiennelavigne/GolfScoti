@@ -50,8 +50,8 @@ export function CourseCard({ course, isFavorite, onToggleFavorite }: CourseCardP
 
                 {course.isTourCourse && (
                     <div className="absolute top-3 left-3">
-                        <Badge variant="accent" className="bg-secondary text-white border-none shadow-sm gap-1">
-                            <Trophy className="w-3 h-3" />
+                        <Badge variant="accent" className="bg-neutral-900/90 backdrop-blur-sm text-white border-none shadow-md gap-1 px-2.5 py-1">
+                            <Trophy className="w-3.5 h-3.5 text-neutral-400" />
                             Tour Course
                         </Badge>
                     </div>
