@@ -1,0 +1,6 @@
+ID,Nom du Golf,Site Web,Email,Téléphone,Latitude,Longitude,Ville/Adresse,Distance St Andrews (miles),Type (Links/Parkland/Historic/Modern),Environnement (Seaside/Inland),Tour Course (VRAI/FAUX),Difficulté (1-5),Slope,Longueur (yards),Année de fondation,Prix Min (£),Prix Max (£),Description Courte
+St_Andrews_Old_Course,St Andrews Old Course,https://standrews.com,reservations@standrews.com,+44 1334 466666,56.3432,-2.8023,St Andrews,0,Links;Historic,Seaside,VRAI,5,132,7305,1552,200,300,The Home of Golf.
+Carnoustie,Carnoustie Golf Links,https://carnoustiegolflinks.com,golf@carnoustielinks.com,+44 1241 802270,56.4975,-2.7167,Carnoustie,25,Links,Seaside,VRAI,5,145,7402,1842,180,280,Golf's greatest test.
+Kingsbarns,Kingsbarns Golf Links,https://kingsbarns.com,info@kingsbarns.com,+44 1334 460860,56.2995,-2.6505,St Andrews,7,Links;Modern,Seaside,VRAI,4,138,7226,2000,250,350,Modern classic with sea views.
+Gleneagles_Kings,Gleneagles (King's),https://gleneagles.com,resort.sales@gleneagles.com,+44 1764 662231,56.2828,-3.7501,Auchterarder,45,Parkland;Historic,Inland,VRAI,4,135,6790,1919,150,275,Beautiful inland challenge.
+Elie,Elie Golf House Club,https://eliegolflinks.co.uk,info@golfhouseclub.co.uk,+44 1333 330301,56.1884,-2.8247,Elie Fife,14,Links,Seaside,FAUX,3,120,6273,1589,95,130,Fun forgiving historic links with no par 5s.

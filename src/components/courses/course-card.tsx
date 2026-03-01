@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart, MapPin, Trophy, Wind } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface CourseCardProps {
     course: GolfCourse;
@@ -99,9 +100,11 @@ export function CourseCard({ course, isFavorite, onToggleFavorite }: CourseCardP
             </CardContent>
 
             <CardFooter className="p-4 pt-2 border-t border-border/50 bg-neutral-50/50">
-                <Button className="w-full text-xs h-9 bg-primary hover:bg-primary/90">
-                    View Details
-                </Button>
+                <Link href={`/courses/${course.id}`} className="w-full block">
+                    <Button className="w-full text-xs h-9 bg-[#2dc653] hover:bg-[#25a544] text-white">
+                        View Details
+                    </Button>
+                </Link>
             </CardFooter>
         </Card>
     );

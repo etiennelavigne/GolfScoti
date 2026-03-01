@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { CourseCard } from "@/components/courses/course-card";
 import { GolfCourse } from "@/types/golf-course";
 import { ExploreFilters } from "@/components/explore/ExploreFilters";
+import { FilterState, INITIAL_FILTER_STATE } from "@/types/filters";
 import dynamic from 'next/dynamic';
+
+import { MOCK_CATALOG } from "@/lib/mock-data";
 
 // Dynamically import the map to avoid SSR issues with Leaflet
 const CourseMap = dynamic(() => import('@/components/explore/CourseMap'), {
@@ -12,97 +15,136 @@ const CourseMap = dynamic(() => import('@/components/explore/CourseMap'), {
     loading: () => <div className="w-full h-full bg-neutral-100 animate-pulse flex items-center justify-center text-neutral-400">Loading map...</div>
 });
 
-const MOCK_CATALOG: GolfCourse[] = [
-    {
-        id: "Old Course", name: "St Andrews Old Course", location: { lat: 56.3432, lng: -2.8023, address: "St Andrews", distanceFromStAndrews: 0 },
-        type: ["Links", "Historic"], environment: "Seaside", isTourCourse: true, difficulty: 5, slope: 132, length: 7305, established: 1552,
-        greenFee: { min: 200, max: 300, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "4h30", services: {} as any, images: [], description: "The Home of Golf.", bookingLink: "#"
-    },
-    {
-        id: "Carnoustie", name: "Carnoustie Golf Links", location: { lat: 56.4975, lng: -2.7167, address: "Carnoustie", distanceFromStAndrews: 25 },
-        type: ["Links"], environment: "Seaside", isTourCourse: true, difficulty: 5, slope: 145, length: 7402, established: 1842,
-        greenFee: { min: 180, max: 280, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "4h30", services: {} as any, images: [], description: "Golf's greatest test.", bookingLink: "#"
-    },
-    {
-        id: "Kingsbarns", name: "Kingsbarns Golf Links", location: { lat: 56.2995, lng: -2.6505, address: "St Andrews", distanceFromStAndrews: 7 },
-        type: ["Links", "Modern"], environment: "Seaside", isTourCourse: true, difficulty: 4, slope: 138, length: 7226, established: 2000,
-        greenFee: { min: 250, max: 350, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "4h45", services: {} as any, images: [], description: "Modern classic with sea views.", bookingLink: "#"
-    },
-    {
-        id: "Gleneagles", name: "Gleneagles (King's)", location: { lat: 56.2828, lng: -3.7501, address: "Auchterarder", distanceFromStAndrews: 45 },
-        type: ["Parkland", "Historic"], environment: "Inland", isTourCourse: true, difficulty: 4, slope: 135, length: 6790, established: 1919,
-        greenFee: { min: 150, max: 275, currency: "GBP" }, accessibility: "Resort", idealSeason: [], averagePlayTime: "4h30", services: {} as any, images: [], description: "Beautiful inland challenge.", bookingLink: "#"
-    },
-    {
-        id: "Elie", name: "Elie Golf House Club", location: { lat: 56.1884, lng: -2.8247, address: "Elie, Fife", distanceFromStAndrews: 14 },
-        type: ["Links"], environment: "Seaside", isTourCourse: false, difficulty: 3, slope: 120, length: 6273, established: 1589,
-        greenFee: { min: 95, max: 130, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "3h45", services: {} as any, images: [], description: "Fun, forgiving historic links with no par 5s.", bookingLink: "#"
-    }
-];
-
 export default function ExplorePage() {
-    const [courses, setCourses] = useState<GolfCourse[]>(MOCK_CATALOG);
     const [hoveredCourseId, setHoveredCourseId] = useState<string | null>(null);
-    const [isMapVisibleMobile, setIsMapVisibleMobile] = useState(false);
+    const [showMapMobile, setShowMapMobile] = useState(false);
+    const [filterState, setFilterState] = useState<FilterState>(INITIAL_FILTER_STATE);
+
+    // Advanced Filtering Logic
+    const filteredCourses = useMemo(() => {
+        return MOCK_CATALOG.filter(course => {
+            // 1. Search Term (Name or Location)
+            if (filterState.searchTerm) {
+                const searchLower = filterState.searchTerm.toLowerCase();
+                const titleMatch = course.name.toLowerCase().includes(searchLower);
+                const locMatch = course.location.address.toLowerCase().includes(searchLower);
+                if (!titleMatch && !locMatch) return false;
+            }
+
+            // 2. Region (This requires real region data eventually, for now we will match address approx)
+            if (filterState.regions.length > 0) {
+                // Simplification for the mock data: checking if the address string overlaps with the region names
+                const matchesRegion = filterState.regions.some(region =>
+                    region.toLowerCase().includes(course.location.address.toLowerCase()) ||
+                    course.location.address.toLowerCase().includes(region.toLowerCase().split(' ')[0])
+                );
+                if (!matchesRegion) return false;
+            }
+
+            // 3. Environment
+            if (filterState.environments.length > 0) {
+                const envMatch = filterState.environments.some(env => env.includes(course.environment));
+                if (!envMatch) return false;
+            }
+
+            // 4. Max Price
+            if (course.greenFee.min > filterState.maxPrice) {
+                return false;
+            }
+
+            // 5. Tour / Historic Courses Toggles
+            if (filterState.tourCoursesOnly && !course.isTourCourse) return false;
+            if (filterState.historicCoursesOnly && course.established > 1900) return false;
+
+            // 6. Index Matcher (This is a complex algorithm in reality, for now we simplify:
+            // High index (> 18.0) prefers shorter/easier/lower slope courses
+            // Low index (< 10.0) prefers longer/harder courses
+            if (filterState.indexMatch !== null) {
+                // Extremely basic mock matching logic for demonstration:
+                // Assume slope 113 is easy (high index friendly), slope 155 is hard (low index only)
+                const isHardCourse = course.slope > 135 || course.difficulty >= 4;
+                if (filterState.indexMatch > 20.0 && isHardCourse) return false;
+            }
+
+            return true;
+        });
+    }, [filterState]);
 
     return (
         <div className="min-h-screen bg-neutral-50 flex flex-col pt-20"> {/* pt-20 to account for fixed navbar */}
+            {/* Top Mobile Bar (only visible on mobile screens) */}
+            <div className="lg:hidden sticky top-20 z-30 bg-white border-b border-neutral-200 p-4 shadow-sm">
+                <ExploreFilters
+                    isMobile
+                    filterState={filterState}
+                    setFilterState={setFilterState}
+                />
+            </div>
 
             {/* Split Screen Layout: 3 Columns on lg/xl screens */}
             <div className="flex-1 flex flex-col lg:flex-row relative">
 
                 {/* 1. LEFT: Permanent Sidebar Filters (20-25% on desktop, hidden on mobile) */}
                 <div className="hidden lg:block lg:w-[25%] xl:w-[22%] border-r border-neutral-200 bg-white h-[calc(100vh-5rem)] sticky top-20 overflow-y-auto custom-scrollbar">
-                    <ExploreFilters />
+                    <ExploreFilters
+                        filterState={filterState}
+                        setFilterState={setFilterState}
+                    />
                 </div>
 
                 {/* 2. MIDDLE: Course List (35-40% on desktop, full width on mobile unless map is active) */}
-                <div className={`w-full lg:w-[35%] xl:w-[38%] flex flex-col ${isMapVisibleMobile ? 'hidden lg:flex' : 'flex'}`}>
-
-                    {/* Top Mobile Bar (only visible on mobile screens) */}
-                    <div className="lg:hidden sticky top-20 z-30 bg-white border-b border-neutral-200 p-4 shadow-sm">
-                        <ExploreFilters isMobile />
-                    </div>
-
+                <div className={`w-full lg:w-[35%] xl:w-[38%] flex flex-col ${showMapMobile ? 'hidden lg:flex' : 'flex'}`}>
                     <div className="flex-1 p-4 md:p-6 overflow-y-auto">
                         <div className="mb-6 flex justify-between items-end">
                             <h1 className="text-2xl xl:text-3xl font-serif font-bold text-neutral-900">Explore Courses</h1>
-                            <p className="text-neutral-500 text-sm xl:text-base font-medium">{courses.length} courses</p>
+                            <p className="text-neutral-500 text-sm xl:text-base font-medium">{filteredCourses.length} courses</p>
                         </div>
 
-                        {/* 1 column list usually better for this width, responsive on massive screens */}
-                        <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6 pb-24">
-                            {courses.map(course => (
-                                <div
-                                    key={course.id}
-                                    onMouseEnter={() => setHoveredCourseId(course.id)}
-                                    onMouseLeave={() => setHoveredCourseId(null)}
+                        {filteredCourses.length === 0 ? (
+                            <div className="py-12 text-center bg-white rounded-xl border border-neutral-200">
+                                <p className="text-neutral-500 font-medium">No courses found matching your criteria.</p>
+                                <button
+                                    onClick={() => setFilterState(INITIAL_FILTER_STATE)}
+                                    className="mt-4 text-[#2dc653] font-bold hover:underline"
                                 >
-                                    <CourseCard
-                                        course={course}
-                                        isFavorite={false}
-                                        onToggleFavorite={() => { }}
-                                    />
-                                </div>
-                            ))}
-                        </div>
+                                    Clear all filters
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 2xl:grid-cols-2 gap-6 pb-24">
+                                {filteredCourses.map(course => (
+                                    <div
+                                        key={course.id}
+                                        onMouseEnter={() => setHoveredCourseId(course.id)}
+                                        onMouseLeave={() => setHoveredCourseId(null)}
+                                    >
+                                        <CourseCard
+                                            course={course}
+                                            isFavorite={false}
+                                            onToggleFavorite={() => { }}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* 3. RIGHT: Sticky Map (40% width on Desktop) */}
-                <div className={`w-full lg:w-[40%] xl:w-[40%] bg-neutral-100 ${isMapVisibleMobile ? 'fixed inset-0 z-40 top-20' : 'hidden lg:block'} lg:sticky lg:top-20 lg:h-[calc(100vh-5rem)] border-l border-neutral-200`}>
-                    <CourseMap
-                        courses={courses}
-                        hoveredCourseId={hoveredCourseId}
-                    />
+                {/* 3. RIGHT: Search Map (Hidden on mobile via toggle) */}
+                <div className={`
+                    absolute inset-0 z-40 bg-neutral-200
+                    lg:static lg:block lg:flex-1 lg:h-[calc(100vh-5rem)] lg:sticky lg:top-20 border-l border-neutral-200
+                    ${showMapMobile ? 'block' : 'hidden'}
+                `}>
+                    <CourseMap courses={filteredCourses} hoveredCourseId={hoveredCourseId} />
                 </div>
 
                 {/* Mobile Map Toggle (Floating Button) */}
                 <button
-                    onClick={() => setIsMapVisibleMobile(!isMapVisibleMobile)}
+                    onClick={() => setShowMapMobile(!showMapMobile)}
                     className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#2dc653] text-white px-6 py-3 rounded-full font-bold shadow-xl shadow-green-900/20 border border-green-500 flex items-center gap-2"
                 >
-                    {isMapVisibleMobile ? "Show List" : "Show Map"}
+                    {showMapMobile ? "Show List" : "Show Map"}
                 </button>
 
             </div>
