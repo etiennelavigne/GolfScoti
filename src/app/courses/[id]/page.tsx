@@ -15,6 +15,7 @@ import {
     Globe
 } from "lucide-react";
 import Link from "next/link";
+import DynamicCourseMap from "@/components/explore/DynamicCourseMap";
 
 export default async function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
     // 1. Await params for Next.js 15+
@@ -132,6 +133,20 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
                                 <XCircle size={20} /> <span>Buggy Rental</span>
                             </div>
                         </div>
+                    </section>
+
+                    <hr className="border-neutral-200" />
+
+                    {/* Location Map */}
+                    <section>
+                        <h2 className="text-2xl font-serif font-bold text-neutral-900 mb-6">Location</h2>
+                        <div className="w-full h-[300px] md:h-[450px] rounded-2xl overflow-hidden border border-neutral-200 shadow-sm relative z-0">
+                            <DynamicCourseMap courses={[course]} hoveredCourseId={course.id} />
+                        </div>
+                        <p className="mt-3 text-neutral-500 text-sm flex items-center gap-2">
+                            <MapPin size={14} />
+                            {course.location.address}
+                        </p>
                     </section>
 
                 </div>

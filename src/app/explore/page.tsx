@@ -2,18 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { CourseCard } from "@/components/courses/course-card";
-import { GolfCourse } from "@/types/golf-course";
 import { ExploreFilters } from "@/components/explore/ExploreFilters";
 import { FilterState, INITIAL_FILTER_STATE } from "@/types/filters";
-import dynamic from 'next/dynamic';
-
 import { MOCK_CATALOG } from "@/lib/mock-data";
-
-// Dynamically import the map to avoid SSR issues with Leaflet
-const CourseMap = dynamic(() => import('@/components/explore/CourseMap'), {
-    ssr: false,
-    loading: () => <div className="w-full h-full bg-neutral-100 animate-pulse flex items-center justify-center text-neutral-400">Loading map...</div>
-});
+import DynamicCourseMap from "@/components/explore/DynamicCourseMap";
 
 export default function ExplorePage() {
     const [hoveredCourseId, setHoveredCourseId] = useState<string | null>(null);
@@ -136,7 +128,7 @@ export default function ExplorePage() {
                     lg:static lg:block lg:flex-1 lg:h-[calc(100vh-5rem)] lg:sticky lg:top-20 border-l border-neutral-200
                     ${showMapMobile ? 'block' : 'hidden'}
                 `}>
-                    <CourseMap courses={filteredCourses} hoveredCourseId={hoveredCourseId} />
+                    <DynamicCourseMap courses={filteredCourses} hoveredCourseId={hoveredCourseId} />
                 </div>
 
                 {/* Mobile Map Toggle (Floating Button) */}
