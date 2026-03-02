@@ -16,15 +16,18 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function CourseDetailPage({ params }: { params: { id: string } }) {
-    // 1. Find the course
-    const course = MOCK_CATALOG.find(c => c.id === params.id);
+export default async function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    // 1. Await params for Next.js 15+
+    const resolvedParams = await params;
+
+    // 2. Find the course
+    const course = MOCK_CATALOG.find(c => c.id === resolvedParams.id);
 
     if (!course) {
         notFound();
     }
 
-    // 2. Format difficulty stars
+    // 3. Format difficulty stars
     const renderDifficulty = () => {
         return (
             <div className="flex gap-1">
