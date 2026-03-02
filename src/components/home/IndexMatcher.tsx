@@ -15,14 +15,14 @@ const MOCK_COURSES: Record<string, GolfCourse[]> = {
             id: "Carnoustie",
             name: "Carnoustie Golf Links",
             location: { lat: 56.4975, lng: -2.7167, address: "Carnoustie", distanceFromStAndrews: 25 },
-            type: ["Links"], environment: "Seaside", isTourCourse: true, difficulty: 5, prestige: 5,
+            type: ["Links"], environment: "Seaside", isTourCourse: true, difficulty: 5, prestige: 5, slope: 130, length: 6500, established: 1900,
             greenFee: { min: 180, max: 280, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "4h30", services: {} as any, images: [], description: "Golf's greatest test.", bookingLink: "#"
         },
         {
             id: "Muirfield",
             name: "Muirfield",
             location: { lat: 56.0406, lng: -2.8228, address: "Gullane", distanceFromStAndrews: 45 },
-            type: ["Links"], environment: "Seaside", isTourCourse: true, difficulty: 5, prestige: 5,
+            type: ["Links"], environment: "Seaside", isTourCourse: true, difficulty: 5, prestige: 5, slope: 130, length: 6500, established: 1900,
             greenFee: { min: 250, max: 250, currency: "GBP" }, accessibility: "Private", idealSeason: [], averagePlayTime: "4h15", services: {} as any, images: [], description: "A demanding masterpiece.", bookingLink: "#"
         }
     ],
@@ -31,14 +31,14 @@ const MOCK_COURSES: Record<string, GolfCourse[]> = {
             id: "Kingsbarns",
             name: "Kingsbarns Golf Links",
             location: { lat: 56.2995, lng: -2.6505, address: "St Andrews", distanceFromStAndrews: 7 },
-            type: ["Links", "Modern"], environment: "Seaside", isTourCourse: true, difficulty: 4, prestige: 5,
+            type: ["Links", "Modern"], environment: "Seaside", isTourCourse: true, difficulty: 4, prestige: 5, slope: 130, length: 6500, established: 1900,
             greenFee: { min: 250, max: 350, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "4h45", services: {} as any, images: [], description: "A modern strategic classic.", bookingLink: "#"
         },
         {
             id: "Gleneagles",
             name: "Gleneagles (King's Course)",
             location: { lat: 56.2828, lng: -3.7501, address: "Auchterarder", distanceFromStAndrews: 45 },
-            type: ["Parkland", "Historic"], environment: "Inland", isTourCourse: true, difficulty: 4, prestige: 5,
+            type: ["Parkland", "Historic"], environment: "Inland", isTourCourse: true, difficulty: 4, prestige: 5, slope: 130, length: 6500, established: 1900,
             greenFee: { min: 150, max: 275, currency: "GBP" }, accessibility: "Resort", idealSeason: [], averagePlayTime: "4h30", services: {} as any, images: [], description: "Beautiful inland challenge.", bookingLink: "#"
         }
     ],
@@ -47,14 +47,14 @@ const MOCK_COURSES: Record<string, GolfCourse[]> = {
             id: "Elie",
             name: "Elie Golf House Club",
             location: { lat: 56.1884, lng: -2.8247, address: "Elie, Fife", distanceFromStAndrews: 14 },
-            type: ["Links"], environment: "Seaside", isTourCourse: false, difficulty: 3, prestige: 4,
+            type: ["Links"], environment: "Seaside", isTourCourse: false, difficulty: 3, prestige: 4, slope: 130, length: 6500, established: 1900,
             greenFee: { min: 95, max: 130, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "3h45", services: {} as any, images: [], description: "Fun, forgiving historic links with no par 5s.", bookingLink: "#"
         },
         {
             id: "Crail",
             name: "Crail (Balcomie Links)",
             location: { lat: 56.275, lng: -2.593, address: "Crail, Fife", distanceFromStAndrews: 11 },
-            type: ["Links"], environment: "Seaside", isTourCourse: false, difficulty: 3, prestige: 4,
+            type: ["Links"], environment: "Seaside", isTourCourse: false, difficulty: 3, prestige: 4, slope: 130, length: 6500, established: 1900,
             greenFee: { min: 100, max: 150, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "4h", services: {} as any, images: [], description: "Scenic and friendly links on the edge of the sea.", bookingLink: "#"
         }
     ]

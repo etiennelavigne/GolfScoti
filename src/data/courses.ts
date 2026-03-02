@@ -14,7 +14,7 @@ export const COURSES: GolfCourse[] = [
         environment: "Seaside",
         isTourCourse: true,
         difficulty: 5,
-        prestige: 5,
+        prestige: 5, slope: 130, length: 6500, established: 1900,
         greenFee: {
             min: 150,
             max: 320,
@@ -46,7 +46,7 @@ export const COURSES: GolfCourse[] = [
         environment: "Seaside",
         isTourCourse: true,
         difficulty: 4,
-        prestige: 5,
+        prestige: 5, slope: 130, length: 6500, established: 1900,
         greenFee: {
             min: 200,
             max: 400,
@@ -78,7 +78,7 @@ export const COURSES: GolfCourse[] = [
         environment: "Seaside",
         isTourCourse: false,
         difficulty: 4,
-        prestige: 4,
+        prestige: 4, slope: 130, length: 6500, established: 1900,
         greenFee: {
             min: 150,
             max: 300,
@@ -110,7 +110,7 @@ export const COURSES: GolfCourse[] = [
         environment: "Seaside",
         isTourCourse: false,
         difficulty: 3,
-        prestige: 4,
+        prestige: 4, slope: 130, length: 6500, established: 1900,
         greenFee: {
             min: 90,
             max: 150,
@@ -142,7 +142,7 @@ export const COURSES: GolfCourse[] = [
         environment: "Seaside",
         isTourCourse: false,
         difficulty: 3,
-        prestige: 3,
+        prestige: 3, slope: 130, length: 6500, established: 1900,
         greenFee: {
             min: 80,
             max: 120,
@@ -174,7 +174,7 @@ export const COURSES: GolfCourse[] = [
         environment: "Inland",
         isTourCourse: true,
         difficulty: 5,
-        prestige: 5,
+        prestige: 5, slope: 130, length: 6500, established: 1900,
         greenFee: {
             min: 200,
             max: 375,

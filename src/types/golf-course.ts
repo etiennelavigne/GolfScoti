@@ -1,6 +1,6 @@
 export type CourseType = 'Links' | 'Parkland' | 'Historic' | 'Modern';
 export type Environment = 'Seaside' | 'Inland';
-export type Accessibility = 'Public' | 'Private';
+export type Accessibility = 'Public' | 'Private' | 'Resort';
 
 export interface GolfCourse {
     id: string;
@@ -16,6 +16,7 @@ export interface GolfCourse {
     isTourCourse: boolean;
 
     difficulty: 1 | 2 | 3 | 4 | 5; // 1 = Easy, 5 = Very Hard
+    prestige?: number; // Added to fix type error
     slope: number; // e.g. 113 to 155
     length: number; // Total yardage or meters
     established: number; // e.g. 1552
