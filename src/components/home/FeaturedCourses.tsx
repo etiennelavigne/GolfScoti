@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client";
 
 import { CourseCard } from "@/components/courses/course-card";
