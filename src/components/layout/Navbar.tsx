@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const isLightMode = pathname === "/explore"; // Force dark text/logos on these pages
+  const lightModePages = ["/explore", "/sign-in", "/sign-up"];
+  const isLightMode = lightModePages.includes(pathname); // Force dark text/logos on these pages
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,23 +69,38 @@ export function Navbar() {
         </nav>
 
         {/* Actions */}
-        <div className="flex gap-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "font-medium hover:bg-white/10",
-              shouldShowDarkElements ? "text-neutral-700 hover:text-black hover:bg-neutral-100" : "text-white hover:text-white"
-            )}
-          >
-            Log In
-          </Button>
-          <Button
-            size="sm"
-            className="bg-[#2dc653] text-white hover:bg-[#25a244] font-semibold shadow-lg shadow-green-900/20"
-          >
-            Sign Up
-          </Button>
+        <div className="flex gap-4 items-center">
+          <SignedOut>
+            <Link
+              href="/sign-in"
+              className={cn(
+                "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors h-9 px-3 hover:bg-white/10",
+                shouldShowDarkElements ? "text-neutral-700 hover:text-black hover:bg-neutral-100" : "text-white hover:text-white"
+              )}
+            >
+              Log In
+            </Link>
+            <Link
+              href="/sign-up"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm transition-colors h-9 px-3 bg-[#2dc653] text-white hover:bg-[#25a244] font-semibold shadow-lg shadow-green-900/20"
+            >
+              Sign Up
+            </Link>
+          </SignedOut>
+          <SignedIn>
+            <div className="flex items-center gap-4">
+              <Link
+                href="/profile"
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-[#2dc653]",
+                  shouldShowDarkElements ? "text-neutral-600" : "text-white/90"
+                )}
+              >
+                Profile
+              </Link>
+              <UserButton />
+            </div>
+          </SignedIn>
         </div>
       </div>
     </header>

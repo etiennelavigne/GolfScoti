@@ -4,7 +4,7 @@ const features = [
     {
         icon: Search,
         title: "Advanced Filtering",
-        description: "Don't waste time scrolling. Filter by sea view, difficulty, budget, and distance from St Andrews to find your perfect match."
+        description: "Don't waste time scrolling. Filter by sea view, difficulty, budget, and distance from St Andrews."
     },
     {
         icon: Map,
@@ -25,26 +25,30 @@ const features = [
 
 export function ValueProps() {
     return (
-        <section className="py-24 bg-neutral-50">
-            <div className="container mx-auto px-4">
-                <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <h2 className="text-3xl md:text-4xl font-serif font-bold text-neutral-900">
+        <section className="py-24 bg-neutral-900 text-white overflow-hidden">
+            <div className="container mx-auto px-4 max-w-7xl relative">
+                {/* Decorative Background Element */}
+                <div className="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 rounded-full bg-[#2dc653]/10 blur-3xl"></div>
+
+                {/* Header Section */}
+                <div className="text-center max-w-3xl mx-auto mb-20 space-y-4 relative z-10">
+                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-white">
                         More Than Just a Directory
                     </h2>
-                    <p className="text-lg text-neutral-600">
-                        GolfScoti is built for the golfer who wants to plan, not just browse.
-                        We provide the tools you need to build the perfect itinerary.
+                    <p className="text-lg md:text-xl text-neutral-400">
+                        GolfScoti provides advanced tools tailored for golfers to plan the perfect itinerary.
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {/* Features Section */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
                     {features.map((feature, index) => (
-                        <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-neutral-100 hover:shadow-md transition-shadow">
+                        <div key={index} className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
                             <div className="w-12 h-12 bg-[#2dc653]/10 rounded-lg flex items-center justify-center mb-6">
                                 <feature.icon className="h-6 w-6 text-[#2dc653]" />
                             </div>
-                            <h3 className="text-xl font-bold mb-3 text-neutral-900">{feature.title}</h3>
-                            <p className="text-neutral-600 leading-relaxed">
+                            <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
+                            <p className="text-neutral-400 leading-relaxed text-sm">
                                 {feature.description}
                             </p>
                         </div>

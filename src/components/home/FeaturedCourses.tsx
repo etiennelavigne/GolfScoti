@@ -4,6 +4,8 @@ import { CourseCard } from "@/components/courses/course-card";
 import { GolfCourse } from "@/types/golf-course";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 
 // Mock data strictly for the homepage display
 const FEATURED_COURSES: GolfCourse[] = [
@@ -64,6 +66,49 @@ const FEATURED_COURSES: GolfCourse[] = [
 ];
 
 export function FeaturedCourses() {
+    const { userId } = useAuth();
+    const [favorites, setFavorites] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (!userId) {
+            setFavorites([]);
+            return;
+        }
+        fetch('/api/favorites')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setFavorites(data.map((fav: any) => fav.courseId));
+                }
+            })
+            .catch(console.error);
+    }, [userId]);
+
+    const handleToggleFavorite = async (courseId: string) => {
+        if (!userId) {
+            window.location.href = '/sign-in';
+            return;
+        }
+
+        const isFav = favorites.includes(courseId);
+        setFavorites(prev => isFav ? prev.filter(id => id !== courseId) : [...prev, courseId]);
+
+        try {
+            if (isFav) {
+                await fetch(`/api/favorites?courseId=${courseId}`, { method: 'DELETE' });
+            } else {
+                await fetch('/api/favorites', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ courseId })
+                });
+            }
+        } catch (error) {
+            console.error("Failed to toggle favorite", error);
+            setFavorites(prev => isFav ? [...prev, courseId] : prev.filter(id => id !== courseId));
+        }
+    };
+
     return (
         <section className="py-24 bg-white">
             <div className="container mx-auto px-4">
@@ -83,7 +128,12 @@ export function FeaturedCourses() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {FEATURED_COURSES.map(course => (
-                        <CourseCard key={course.id} course={course} isFavorite={false} onToggleFavorite={() => { }} />
+                        <CourseCard
+                            key={course.id}
+                            course={course}
+                            isFavorite={favorites.includes(course.id)}
+                            onToggleFavorite={handleToggleFavorite}
+                        />
                     ))}
                 </div>
 

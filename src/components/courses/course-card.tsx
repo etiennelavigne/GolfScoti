@@ -1,3 +1,5 @@
+"use client";
+
 import { GolfCourse } from "@/types/golf-course";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

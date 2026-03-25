@@ -32,19 +32,20 @@ const createCustomIcon = (isActive: boolean, label: string) => {
 
 export default function CourseMap({ courses, hoveredCourseId }: CourseMapProps) {
     const mapRef = useRef<L.Map | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const markersRef = useRef<{ [key: string]: L.Marker }>({});
 
     useEffect(() => {
         // Initialize map only once
-        if (!mapRef.current) {
+        if (!mapRef.current && containerRef.current) {
             // Default center: St Andrews roughly
-            mapRef.current = L.map('map-container', {
+            mapRef.current = L.map(containerRef.current, {
                 zoomControl: false // We can add custom zoom control later
             }).setView([56.3400, -2.8000], 8);
 
             // Add a clean, minimal map tile layer (CartoDB Positron is great for premium apps)
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 subdomains: 'abcd',
                 maxZoom: 20
             }).addTo(mapRef.current);
@@ -83,7 +84,6 @@ export default function CourseMap({ courses, hoveredCourseId }: CourseMapProps) 
             const popupHtml = `
                 <div class="flex flex-col w-[240px] font-sans overflow-hidden rounded-xl">
                     <div class="h-[120px] bg-neutral-200 relative">
-                        <!-- We would place next/image here ideally, but raw HTML requires standard img tag. Handled via placeholder for now -->
                         <div class="absolute inset-0 flex items-center justify-center text-neutral-400 text-xs">No Image Preview</div>
                         <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-bold text-[#2dc653] shadow-sm">
                             £${course.greenFee.min} - £${course.greenFee.max}
@@ -121,6 +121,6 @@ export default function CourseMap({ courses, hoveredCourseId }: CourseMapProps) 
     }, [courses, hoveredCourseId]);
 
     return (
-        <div id="map-container" className="w-full h-full z-0 relative" />
+        <div ref={containerRef} className="w-full h-full z-0 relative" />
     );
 }
