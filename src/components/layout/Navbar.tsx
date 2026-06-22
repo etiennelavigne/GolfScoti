@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { SignInButton, SignUpButton, UserButton, Show } from "@clerk/nextjs";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const isLightMode = pathname === "/explore"; // Force dark text/logos on these pages
+  const isLightMode = pathname === "/explore";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,23 +68,45 @@ export function Navbar() {
         </nav>
 
         {/* Actions */}
-        <div className="flex gap-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "font-medium hover:bg-white/10",
-              shouldShowDarkElements ? "text-neutral-700 hover:text-black hover:bg-neutral-100" : "text-white hover:text-white"
-            )}
-          >
-            Log In
-          </Button>
-          <Button
-            size="sm"
-            className="bg-[#2dc653] text-white hover:bg-[#25a244] font-semibold shadow-lg shadow-green-900/20"
-          >
-            Sign Up
-          </Button>
+        <div className="flex gap-3 items-center">
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "font-medium hover:bg-white/10",
+                  shouldShowDarkElements
+                    ? "text-neutral-700 hover:text-black hover:bg-neutral-100"
+                    : "text-white hover:text-white"
+                )}
+              >
+                Log In
+              </Button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <Button
+                size="sm"
+                className="bg-[#2dc653] text-white hover:bg-[#25a244] font-semibold shadow-lg shadow-green-900/20"
+              >
+                Sign Up
+              </Button>
+            </SignUpButton>
+          </Show>
+          <Show when="signed-in">
+            <div className="flex items-center gap-2">
+              <Link
+                href="/profile"
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-[#2dc653]",
+                  shouldShowDarkElements ? "text-neutral-600" : "text-white/90"
+                )}
+              >
+                My Space
+              </Link>
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          </Show>
         </div>
       </div>
     </header>

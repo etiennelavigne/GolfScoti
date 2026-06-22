@@ -6,6 +6,8 @@ import { GolfCourse } from "@/types/golf-course";
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
+import { useUser } from "@/context/UserContext";
+import { useClerk, useAuth } from "@clerk/nextjs";
 
 // Minimal Sheet Mock for Mobile if not exists, or I can skip and use simple conditional
 // Actually, I'll use a simple conditional for mobile or desktop sidebar for now to save complexity
@@ -13,7 +15,9 @@ import { Filter } from "lucide-react";
 
 export function ExploreClient({ initialCourses }: { initialCourses: GolfCourse[] }) {
     const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
-    const [favorites, setFavorites] = useState<string[]>([]);
+    const { toggleFavorite, isFavorite } = useUser();
+    const { openSignIn } = useClerk();
+    const { isSignedIn } = useAuth();
 
     const filteredCourses = useMemo(() => {
         return initialCourses.filter((course) => {
@@ -47,10 +51,12 @@ export function ExploreClient({ initialCourses }: { initialCourses: GolfCourse[]
         });
     }, [initialCourses, filters]);
 
-    const toggleFavorite = (id: string) => {
-        setFavorites(prev =>
-            prev.includes(id) ? prev.filter(fid => fid !== id) : [...prev, id]
-        );
+    const handleToggleFavorite = (id: string) => {
+        if (!isSignedIn) {
+            openSignIn();
+            return;
+        }
+        toggleFavorite(id);
     };
 
     return (
@@ -76,8 +82,8 @@ export function ExploreClient({ initialCourses }: { initialCourses: GolfCourse[]
                                     <CourseCard
                                         key={course.id}
                                         course={course}
-                                        isFavorite={favorites.includes(course.id)}
-                                        onToggleFavorite={toggleFavorite}
+                                        isFavorite={isFavorite(course.id)}
+                                        onToggleFavorite={handleToggleFavorite}
                                     />
                                 ))}
                             </div>

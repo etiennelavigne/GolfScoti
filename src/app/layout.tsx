@@ -1,3 +1,4 @@
+import {ClerkProvider} from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
 
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { ClientProviders } from "@/components/ClientProviders";
 
 export default function RootLayout({
   children,
@@ -30,9 +32,13 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${playfair.variable} antialiased`}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <ClerkProvider>
+          <ClientProviders>
+          <Navbar />
+          {children}
+          <Footer />
+          </ClientProviders>
+        </ClerkProvider>
       </body>
     </html>
   );
