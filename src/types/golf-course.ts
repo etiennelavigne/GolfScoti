@@ -16,9 +16,10 @@ export interface GolfCourse {
     isTourCourse: boolean;
 
     difficulty: 1 | 2 | 3 | 4 | 5; // 1 = Easy, 5 = Very Hard
-    slope: number; // e.g. 113 to 155
-    length: number; // Total yardage or meters
-    established: number; // e.g. 1552
+    prestige?: 1 | 2 | 3 | 4 | 5;
+    slope?: number; // e.g. 113 to 155
+    length?: number; // yards
+    established?: number; // e.g. 1552
 
     greenFee: {
         min: number;

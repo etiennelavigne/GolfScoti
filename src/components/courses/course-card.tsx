@@ -1,6 +1,7 @@
 import { GolfCourse } from "@/types/golf-course";
 import { Heart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface CourseCardProps {
     course: GolfCourse;
@@ -10,7 +11,7 @@ interface CourseCardProps {
 
 export function CourseCard({ course, isFavorite, onToggleFavorite }: CourseCardProps) {
     return (
-        <div className="group cursor-pointer">
+        <Link href={`/courses/${course.id}`} className="group cursor-pointer block">
             {/* Image */}
             <div className="relative aspect-[4/3] overflow-hidden mb-4 bg-[#0D2417]">
                 {course.images[0] ? (
@@ -84,6 +85,6 @@ export function CourseCard({ course, isFavorite, onToggleFavorite }: CourseCardP
                     <span className="text-sm text-[#9C8D7B]">{course.averagePlayTime}</span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
