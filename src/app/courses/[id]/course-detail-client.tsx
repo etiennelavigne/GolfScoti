@@ -219,7 +219,7 @@ export function CourseDetailClient({ course, nearby }: Props) {
                                         </a>
                                     )}
                                     <button
-                                        onClick={() => toggleFavorite(course)}
+                                        onClick={() => toggleFavorite(course.id)}
                                         className={cn(
                                             "flex items-center justify-center gap-2 w-full h-12 border text-xs font-bold tracking-[0.2em] uppercase transition-colors",
                                             favorited

@@ -34,6 +34,7 @@ export function CourseCard({ course, isFavorite, onToggleFavorite }: CourseCardP
                 <button
                     className="absolute top-3 right-3 h-8 w-8 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center hover:bg-black/40 transition-colors z-10"
                     onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         onToggleFavorite?.(course.id);
                     }}
