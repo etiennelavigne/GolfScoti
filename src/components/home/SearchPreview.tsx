@@ -1,84 +1,73 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Search, MapPin, PoundSterling, TreePine, Flag } from "lucide-react";
+import { Search, MapPin, PoundSterling, Flag } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function SearchPreview() {
-    const [price, setPrice] = useState(250);
+    const [price, setPrice] = useState(300);
+    const router = useRouter();
 
     return (
-        <div className="relative z-20 -mt-24 container mx-auto px-4 mb-20 animate-fade-in-up delay-200">
-            <div className="bg-white rounded-2xl shadow-xl p-4 md:p-6 max-w-7xl mx-auto border border-neutral-100">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 gap-y-8 items-end">
+        <div className="bg-white border-b border-[#E5DDD3]">
+            <div className="container mx-auto px-6 md:px-16">
+                <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#E5DDD3]">
 
-                    {/* Row 1 */}
-                    <div className="space-y-2 relative group">
-                        <label className="text-xs font-semibold uppercase text-neutral-500 tracking-wider ml-1">Region</label>
-                        <div className="relative">
-                            <MapPin className="absolute left-3.5 top-3.5 h-5 w-5 text-neutral-400 group-hover:text-[#2dc653] transition-colors pointer-events-none" />
-                            <select className="w-full h-12 pl-11 pr-10 bg-white border border-neutral-200 hover:border-neutral-300 rounded-xl text-sm font-medium text-neutral-800 focus:outline-none focus:ring-2 focus:ring-[#2dc653]/20 focus:border-[#2dc653] transition-all duration-200 appearance-none cursor-pointer shadow-sm relative">
+                    {/* Region */}
+                    <div className="flex items-center gap-4 py-6 md:pr-8">
+                        <MapPin className="h-4 w-4 text-[#C9A86C] shrink-0" />
+                        <div className="flex-1">
+                            <p className="text-[9px] font-bold tracking-[0.25em] uppercase text-[#9C8D7B] mb-1.5">Region</p>
+                            <select className="w-full text-sm font-medium text-[#1C1917] bg-transparent focus:outline-none cursor-pointer appearance-none">
                                 <option value="">All Scotland</option>
                                 <option value="standrews">St Andrews & Fife</option>
                                 <option value="highlands">Highlands</option>
                                 <option value="edinburgh">Edinburgh & East</option>
                                 <option value="west">West Coast</option>
                             </select>
-                            <div className="absolute right-3.5 top-4 pointer-events-none text-neutral-400 group-hover:text-[#2dc653] transition-colors">
-                                <svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        </div>
+                    </div>
+
+                    {/* Max Price */}
+                    <div className="flex items-center gap-4 py-6 md:px-8">
+                        <PoundSterling className="h-4 w-4 text-[#C9A86C] shrink-0" />
+                        <div className="flex-1">
+                            <div className="flex justify-between items-center mb-1.5">
+                                <p className="text-[9px] font-bold tracking-[0.25em] uppercase text-[#9C8D7B]">Max Green Fee</p>
+                                <span className="text-[9px] font-bold text-[#1B5E35] tracking-wider">£{price}</span>
                             </div>
+                            <input
+                                type="range" min="50" max="500" step="10"
+                                value={price}
+                                onChange={(e) => setPrice(Number(e.target.value))}
+                                className="w-full h-[2px] bg-[#E5DDD3] rounded-none appearance-none cursor-pointer accent-[#1B5E35]"
+                            />
                         </div>
                     </div>
 
-                    <div className="space-y-2 relative group">
-                        <div className="flex justify-between items-center px-1 mb-1">
-                            <label className="text-xs font-semibold uppercase text-neutral-500 tracking-wider">Max Price</label>
-                            <span className="text-sm font-bold text-[#2dc653]">£{price}</span>
-                        </div>
-                        <div className="relative h-12 flex items-center bg-white border border-neutral-200 hover:border-neutral-300 rounded-xl px-4 shadow-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-[#2dc653]/20 focus-within:border-[#2dc653]">
-                            <PoundSterling className="absolute left-3.5 h-5 w-5 text-neutral-400 group-hover:text-[#2dc653] transition-colors pointer-events-none" />
-                            <input type="range" min="0" max="500" step="10" value={price} onChange={(e) => setPrice(Number(e.target.value))} className="w-full h-1.5 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-[#2dc653] pl-6 ml-6 focus:outline-none" />
-                        </div>
-                    </div>
-
-                    <div className="space-y-2 relative group">
-                        <label className="text-xs font-semibold uppercase text-neutral-500 tracking-wider ml-1">Environment</label>
-                        <div className="relative">
-                            <TreePine className="absolute left-3.5 top-3.5 h-5 w-5 text-neutral-400 group-hover:text-[#2dc653] transition-colors pointer-events-none" />
-                            <select className="w-full h-12 pl-11 pr-10 bg-white border border-neutral-200 hover:border-neutral-300 rounded-xl text-sm font-medium text-neutral-800 focus:outline-none focus:ring-2 focus:ring-[#2dc653]/20 focus:border-[#2dc653] transition-all duration-200 appearance-none cursor-pointer shadow-sm relative">
-                                <option value="">Any Environment</option>
-                                <option value="seaside">Seaside</option>
-                                <option value="inland">Inland</option>
+                    {/* Difficulty */}
+                    <div className="flex items-center gap-4 py-6 md:px-8">
+                        <Flag className="h-4 w-4 text-[#C9A86C] shrink-0" />
+                        <div className="flex-1">
+                            <p className="text-[9px] font-bold tracking-[0.25em] uppercase text-[#9C8D7B] mb-1.5">Difficulty</p>
+                            <select className="w-full text-sm font-medium text-[#1C1917] bg-transparent focus:outline-none cursor-pointer appearance-none">
+                                <option value="">Any Level</option>
+                                <option value="1">Beginner Friendly</option>
+                                <option value="3">Moderate</option>
+                                <option value="5">Championship</option>
                             </select>
-                            <div className="absolute right-3.5 top-4 pointer-events-none text-neutral-400 group-hover:text-[#2dc653] transition-colors">
-                                <svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                            </div>
                         </div>
                     </div>
 
-                    {/* Row 2 */}
-                    <div className="space-y-2 relative group">
-                        <label className="text-xs font-semibold uppercase text-neutral-500 tracking-wider ml-1">Difficulty</label>
-                        <div className="relative">
-                            <Flag className="absolute left-3.5 top-3.5 h-5 w-5 text-neutral-400 group-hover:text-[#2dc653] transition-colors pointer-events-none" />
-                            <select className="w-full h-12 pl-11 pr-10 bg-white border border-neutral-200 hover:border-neutral-300 rounded-xl text-sm font-medium text-neutral-800 focus:outline-none focus:ring-2 focus:ring-[#2dc653]/20 focus:border-[#2dc653] transition-all duration-200 appearance-none cursor-pointer shadow-sm relative">
-                                <option value="">Any Difficulty</option>
-                                <option value="1">1 - Easy</option>
-                                <option value="3">3 - Moderate</option>
-                                <option value="5">5 - Hard</option>
-                            </select>
-                            <div className="absolute right-3.5 top-4 pointer-events-none text-neutral-400 group-hover:text-[#2dc653] transition-colors">
-                                <svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div className="flex items-end">
-                        <Button className="w-full h-12 bg-[#2dc653] hover:bg-[#25a244] text-lg font-medium shadow-lg shadow-green-900/20 rounded-xl transition-transform hover:scale-[1.02]">
-                            <Search className="mr-2 h-5 w-5" />
+                    {/* CTA */}
+                    <div className="flex items-center py-6 md:pl-8">
+                        <button
+                            onClick={() => router.push("/explore")}
+                            className="w-full flex items-center justify-center gap-2.5 h-11 bg-[#1B5E35] hover:bg-[#0D2417] text-white text-xs font-bold tracking-[0.2em] uppercase transition-colors"
+                        >
+                            <Search className="h-3.5 w-3.5" />
                             Search
-                        </Button>
+                        </button>
                     </div>
                 </div>
             </div>
