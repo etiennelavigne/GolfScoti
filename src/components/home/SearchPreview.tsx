@@ -3,8 +3,24 @@
 import { Search, MapPin, PoundSterling, Flag } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { PremiumSelect } from "@/components/ui/premium-select";
+
+const REGIONS = [
+    { value: "standrews", label: "St Andrews & Fife" },
+    { value: "highlands", label: "Highlands" },
+    { value: "edinburgh", label: "Edinburgh & East" },
+    { value: "west", label: "West Coast" },
+];
+
+const DIFFICULTIES = [
+    { value: "1", label: "Beginner Friendly" },
+    { value: "3", label: "Moderate" },
+    { value: "5", label: "Championship" },
+];
 
 export function SearchPreview() {
+    const [region, setRegion] = useState("");
+    const [difficulty, setDifficulty] = useState("");
     const [price, setPrice] = useState(300);
     const router = useRouter();
 
@@ -14,18 +30,16 @@ export function SearchPreview() {
                 <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#E5DDD3]">
 
                     {/* Region */}
-                    <div className="flex items-center gap-4 py-6 md:pr-8">
-                        <MapPin className="h-4 w-4 text-[#C9A86C] shrink-0" />
-                        <div className="flex-1">
-                            <p className="text-[9px] font-bold tracking-[0.25em] uppercase text-[#9C8D7B] mb-1.5">Region</p>
-                            <select className="w-full text-sm font-medium text-[#1C1917] bg-transparent focus:outline-none cursor-pointer appearance-none">
-                                <option value="">All Scotland</option>
-                                <option value="standrews">St Andrews & Fife</option>
-                                <option value="highlands">Highlands</option>
-                                <option value="edinburgh">Edinburgh & East</option>
-                                <option value="west">West Coast</option>
-                            </select>
-                        </div>
+                    <div className="flex items-start gap-4 py-6 md:pr-8">
+                        <MapPin className="h-4 w-4 text-[#C9A86C] shrink-0 mt-[22px]" />
+                        <PremiumSelect
+                            label="Region"
+                            options={REGIONS}
+                            value={region}
+                            onChange={setRegion}
+                            placeholder="All Scotland"
+                            className="flex-1"
+                        />
                     </div>
 
                     {/* Max Price */}
@@ -46,17 +60,16 @@ export function SearchPreview() {
                     </div>
 
                     {/* Difficulty */}
-                    <div className="flex items-center gap-4 py-6 md:px-8">
-                        <Flag className="h-4 w-4 text-[#C9A86C] shrink-0" />
-                        <div className="flex-1">
-                            <p className="text-[9px] font-bold tracking-[0.25em] uppercase text-[#9C8D7B] mb-1.5">Difficulty</p>
-                            <select className="w-full text-sm font-medium text-[#1C1917] bg-transparent focus:outline-none cursor-pointer appearance-none">
-                                <option value="">Any Level</option>
-                                <option value="1">Beginner Friendly</option>
-                                <option value="3">Moderate</option>
-                                <option value="5">Championship</option>
-                            </select>
-                        </div>
+                    <div className="flex items-start gap-4 py-6 md:px-8">
+                        <Flag className="h-4 w-4 text-[#C9A86C] shrink-0 mt-[22px]" />
+                        <PremiumSelect
+                            label="Difficulty"
+                            options={DIFFICULTIES}
+                            value={difficulty}
+                            onChange={setDifficulty}
+                            placeholder="Any Level"
+                            className="flex-1"
+                        />
                     </div>
 
                     {/* CTA */}
