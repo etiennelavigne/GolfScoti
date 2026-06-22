@@ -2,46 +2,17 @@
 
 import { useState } from "react";
 import { CourseCard } from "@/components/courses/course-card";
-import { GolfCourse } from "@/types/golf-course";
 import { ExploreFilters } from "@/components/explore/ExploreFilters";
+import { COURSES } from "@/data/courses";
 import dynamic from 'next/dynamic';
 
-// Dynamically import the map to avoid SSR issues with Leaflet
 const CourseMap = dynamic(() => import('@/components/explore/CourseMap'), {
     ssr: false,
     loading: () => <div className="w-full h-full bg-neutral-100 animate-pulse flex items-center justify-center text-neutral-400">Loading map...</div>
 });
 
-const MOCK_CATALOG: GolfCourse[] = [
-    {
-        id: "Old Course", name: "St Andrews Old Course", location: { lat: 56.3432, lng: -2.8023, address: "St Andrews", distanceFromStAndrews: 0 },
-        type: ["Links", "Historic"], environment: "Seaside", isTourCourse: true, difficulty: 5, slope: 132, length: 7305, established: 1552,
-        greenFee: { min: 200, max: 300, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "4h30", services: {} as any, images: [], description: "The Home of Golf.", bookingLink: "#"
-    },
-    {
-        id: "Carnoustie", name: "Carnoustie Golf Links", location: { lat: 56.4975, lng: -2.7167, address: "Carnoustie", distanceFromStAndrews: 25 },
-        type: ["Links"], environment: "Seaside", isTourCourse: true, difficulty: 5, slope: 145, length: 7402, established: 1842,
-        greenFee: { min: 180, max: 280, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "4h30", services: {} as any, images: [], description: "Golf's greatest test.", bookingLink: "#"
-    },
-    {
-        id: "Kingsbarns", name: "Kingsbarns Golf Links", location: { lat: 56.2995, lng: -2.6505, address: "St Andrews", distanceFromStAndrews: 7 },
-        type: ["Links", "Modern"], environment: "Seaside", isTourCourse: true, difficulty: 4, slope: 138, length: 7226, established: 2000,
-        greenFee: { min: 250, max: 350, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "4h45", services: {} as any, images: [], description: "Modern classic with sea views.", bookingLink: "#"
-    },
-    {
-        id: "Gleneagles", name: "Gleneagles (King's)", location: { lat: 56.2828, lng: -3.7501, address: "Auchterarder", distanceFromStAndrews: 45 },
-        type: ["Parkland", "Historic"], environment: "Inland", isTourCourse: true, difficulty: 4, slope: 135, length: 6790, established: 1919,
-        greenFee: { min: 150, max: 275, currency: "GBP" }, accessibility: "Resort", idealSeason: [], averagePlayTime: "4h30", services: {} as any, images: [], description: "Beautiful inland challenge.", bookingLink: "#"
-    },
-    {
-        id: "Elie", name: "Elie Golf House Club", location: { lat: 56.1884, lng: -2.8247, address: "Elie, Fife", distanceFromStAndrews: 14 },
-        type: ["Links"], environment: "Seaside", isTourCourse: false, difficulty: 3, slope: 120, length: 6273, established: 1589,
-        greenFee: { min: 95, max: 130, currency: "GBP" }, accessibility: "Public", idealSeason: [], averagePlayTime: "3h45", services: {} as any, images: [], description: "Fun, forgiving historic links with no par 5s.", bookingLink: "#"
-    }
-];
-
 export default function ExplorePage() {
-    const [courses, setCourses] = useState<GolfCourse[]>(MOCK_CATALOG);
+    const [courses, setCourses] = useState(COURSES);
     const [hoveredCourseId, setHoveredCourseId] = useState<string | null>(null);
     const [isMapVisibleMobile, setIsMapVisibleMobile] = useState(false);
 
